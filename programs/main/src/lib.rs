@@ -87,7 +87,7 @@ pub struct EscrowAccount {
 impl EscrowAccount {
     pub const MAX_TITLE_LENGTH: usize = 128;
 
-    pub const MAX_SPACE: usize = 8 + // discriminator
+    pub const MAX_SPACE: usize = 8 + // discriminator: u8, 8
         4 + Self::MAX_TITLE_LENGTH + // title String
         8 + // lamports: u64
         32 + // buyer: pubkey
