@@ -15,28 +15,79 @@ describe("main", () => {
 
   it("Initialize", async () => {
     const tx = await program.methods
-        .initializeEscrow(
+        .createEscrow(
             {
               title: "Parser",
               lamports: amount_bn,
-              seller: provider.publicKey,
-              buyer: receiver.publicKey,
+              seller: receiver.publicKey,
             }
         ).accounts({
-          signer: provider.publicKey,
+          buyer: provider.publicKey,
+        seller: receiver.publicKey,
         })
         .rpc();
     console.log("Your transaction signature", tx);
   });
 
-  it("Proceed", async () => {
+  it("Describe", async () => {
+      const tx = await program.methods
+          .describeEscrow()
+          .accounts({
+              buyer: provider.publicKey,
+              seller: receiver.publicKey,
+          })
+          .rpc()
+      console.log("Your transaction signature", tx);
+  });
+
+  it("Confirm", async () => {
     const tx = await program.methods
-        .confirmDelivery()
+        .confirmEscrow()
         .accounts({
-          signer: provider.publicKey,
-          recipient: receiver.publicKey,
-        }).rpc();
+          buyer: provider.publicKey,
+          seller: receiver.publicKey,
+        })
+        .rpc();
 
     console.log("Your transaction signature", tx);
   });
+
+    it("Initialize", async () => {
+        const tx = await program.methods
+            .createEscrow(
+                {
+                    title: "Validator",
+                    lamports: amount_bn,
+                    seller: receiver.publicKey,
+                }
+            ).accounts({
+                buyer: provider.publicKey,
+                seller: receiver.publicKey,
+            })
+            .rpc();
+        console.log("Your transaction signature", tx);
+    });
+
+    it("Describe", async () => {
+        const tx = await program.methods
+            .describeEscrow()
+            .accounts({
+                buyer: provider.publicKey,
+                seller: receiver.publicKey,
+            })
+            .rpc()
+        console.log("Your transaction signature", tx);
+    });
+
+    it("Cancel", async () => {
+        const tx = await program.methods
+            .cancelEscrow()
+            .accounts({
+                signer: provider.publicKey,
+                buyer: provider.publicKey,
+                seller: receiver.publicKey,
+            })
+            .rpc()
+        console.log("Your transaction signature", tx);
+    });
 });
